@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>우리 동네 - 펫플스</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 구글 폰트 Noto Sans KR 로드 (선택 사항) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Leaflet.js (오픈소스 지도 라이브러리) 로드 - 별도 가입 필요 없음 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</head>
+<body>
+
+    <!-- 헤더: 로고와 네비게이션 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="community.html">커뮤니티</a></li>
+                    <li><a href="matching.html">산책 메이트 찾기</a></li>
+                    <li><a href="local.html">우리 동네</a></li>
+                    <li><a href="index.html#app-download">앱 다운로드</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <section>
+                <h2>🏡 우리 동네</h2>
+                <p>지도에서 우리 동네의 동물병원, 애견 카페 등 유용한 장소들을 확인해보세요!</p>
+                <!-- 지도를 표시할 div 입니다 -->
+                <div id="map" style="width:100%;height:500px;margin-top: 20px; border-radius: 8px;"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터: 저작권 및 기타 정보 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>회사소개 | 이용약관 | 개인정보처리방침</p>
+        </div>
+    </footer>
+
+    <script>
+        // Leaflet.js를 사용하여 지도 생성
+        // 1. 지도 초기화. 'map'은 지도를 표시할 div의 id입니다.
+        //    [위도, 경도] 형식으로 중심 좌표를 설정하고, 확대 레벨(zoom)을 지정합니다. (서울 시청 기준)
+        var map = L.map('map').setView([37.566826, 126.9786567], 14);
+
+        // 2. 지도 타일(배경)을 설정하고 추가합니다. OpenStreetMap 타일을 사용합니다.
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // 3. 동물병원 위치 데이터 (예시)
+        //    이름과 [위도, 경도] 좌표를 포함하는 배열입니다.
+        var hospitals = [
+            { name: '광화문 슈샤 동물병원', latlng: [37.5720, 126.9750] },
+            { name: '남산 동물병원', latlng: [37.5603, 126.9830] },
+            { name: '충무로 동물종합병원', latlng: [37.5620, 126.9940] },
+            { name: '대한 동물병원', latlng: [37.5680, 126.9700] }
+        ];
+
+        // 4. 반복문을 사용해 여러 마커를 지도에 추가합니다.
+        hospitals.forEach(function(hospital) {
+            L.marker(hospital.latlng) // hospital.latlng 좌표에 마커를 생성합니다.
+                .addTo(map) // 생성된 마커를 지도에 추가합니다.
+                .bindPopup('<b>' + hospital.name + '</b>'); // 마커를 클릭했을 때 표시될 팝업을 연결합니다.
+        });
+
+    </script>
+
+</body>
+</html>

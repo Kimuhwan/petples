@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>산책 메이트 찾기 - 펫플스</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <!-- 헤더: 로고와 네비게이션 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="community.html">커뮤니티</a></li>
+                    <li><a href="matching.html">산책 메이트 찾기</a></li>
+                    <li><a href="local.html">우리 동네</a></li>
+                    <li><a href="index.html#app-download">앱 다운로드</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <section>
+                <h2>🤝 산책 메이트를 찾아보세요!</h2>
+                <div class="matching-container">
+                    <div class="card-stack">
+                        <!-- 카드 목록 -->
+                        <div class="card">
+                            <img src="siba.png" alt="시바견">
+                            <div class="card-info"><h3>콩이, 2</h3><p>시바견 | 여아</p></div>
+                        </div>
+                        <div class="card">
+                            <img src="pome.png" alt="포메라니안">
+                            <div class="card-info"><h3>뭉치, 1</h3><p>포메라니안 | 남아</p></div>
+                        </div>
+                        <div class="card">
+                            <img src="daks.png" alt="닥스훈트">
+                            <div class="card-info"><h3>초코, 5</h3><p>닥스훈트 | 여아</p></div>
+                        </div>
+                        <div class="card">
+                            <img src="rit.png" alt="리트리버">
+                            <div class="card-info"><h3>리트리버, 3</h3><p>골든 리트리버 | 남아</p></div>
+                        </div>
+                        <div class="card">
+                            <img src="beagle.png" alt="비글">
+                            <div class="card-info"><h3>여름이, 2</h3><p>비글 | 여아</p></div>
+                        </div>
+                        <div class="card">
+                            <img src="corgi.png" alt="웰시코기">
+                            <div class="card-info"><h3>마루, 4</h3><p>웰시코기 | 남아</p></div>
+                        </div>
+                        <p id="no-more-cards">더 이상 추천할 친구가 없어요!</p>
+                    </div>
+                    <div class="action-buttons"><button class="btn-dislike">❌</button><button class="btn-superlike">⭐</button><button class="btn-like">💚</button></div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터: 저작권 및 기타 정보 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>회사소개 | 이용약관 | 개인정보처리방침</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cardStack = document.querySelector('.card-stack');
+        let cards = Array.from(cardStack.querySelectorAll('.card'));
+        const noMoreCardsMsg = document.getElementById('no-more-cards');
+
+        let activeCard = null;
+        let startX = 0, startY = 0;
+        let isDragging = false;
+
+        function initCards() {
+            cards = Array.from(cardStack.querySelectorAll('.card'));
+            if (cards.length > 0) {
+                activeCard = cards[0]; // 맨 위 카드를 활성화
+                noMoreCardsMsg.style.display = 'none';
+                attachEventListeners(activeCard);
+            } else {
+                activeCard = null;
+                noMoreCardsMsg.style.display = 'block';
+            }
+        }
+
+        function attachEventListeners(card) {
+            card.addEventListener('pointerdown', onDragStart);
+            card.addEventListener('pointermove', onDragMove);
+            card.addEventListener('pointerup', onDragEnd);
+            card.addEventListener('pointerleave', onDragEnd);
+        }
+
+        function onDragStart(e) {
+            if (!activeCard) return;
+            isDragging = true;
+            startX = e.pageX;
+            startY = e.pageY;
+            activeCard.classList.add('dragging');
+        }
+
+        function onDragMove(e) {
+            if (!isDragging || !activeCard) return;
+            const currentX = e.pageX;
+            const deltaX = currentX - startX;
+            const rotate = deltaX * 0.1; // 스와이프 거리에 따라 회전
+            activeCard.style.transform = `translateX(${deltaX}px) rotate(${rotate}deg)`;
+        }
+
+        function onDragEnd(e) {
+            if (!isDragging || !activeCard) return;
+            isDragging = false;
+            activeCard.classList.remove('dragging');
+
+            const deltaX = e.pageX - startX;
+            const decisionThreshold = 100; // 이 거리 이상 움직이면 결정
+
+            if (Math.abs(deltaX) > decisionThreshold) {
+                const direction = deltaX > 0 ? 1 : -1;
+                swipeCard(direction);
+            } else {
+                // 원래 위치로 복귀
+                activeCard.style.transform = '';
+            }
+        }
+
+        function swipeCard(direction) {
+            if (!activeCard) return;
+
+            const endX = (window.innerWidth / 2) * direction;
+            const flyOutAngle = direction * 15;
+            
+            activeCard.style.transition = 'transform 0.5s ease-out';
+            activeCard.style.transform = `translateX(${endX}px) rotate(${flyOutAngle}deg)`;
+            
+            // 카드가 사라진 후 처리
+            activeCard.addEventListener('transitionend', () => {
+                activeCard.remove();
+                initCards();
+            }, { once: true });
+        }
+
+        function superLikeCard() {
+            if (!activeCard) return;
+
+            // 슈퍼 라이크 애니메이션: 위로 솟아오르며 사라짐
+            activeCard.style.transition = 'transform 0.5s ease-in, opacity 0.5s ease-in';
+            activeCard.style.transform = 'translateY(-100vh) rotate(0deg)';
+            activeCard.style.opacity = '0';
+
+            // 카드가 사라진 후 처리
+            activeCard.addEventListener('transitionend', () => {
+                activeCard.remove();
+                initCards();
+            }, { once: true });
+        }
+
+        // 버튼 클릭 이벤트
+        document.querySelector('.btn-dislike').addEventListener('click', () => swipeCard(-1));
+        document.querySelector('.btn-like').addEventListener('click', () => swipeCard(1));
+        document.querySelector('.btn-superlike').addEventListener('click', () => {
+            // 슈퍼 라이크 버튼 클릭 시 새로운 애니메이션 함수 호출
+            superLikeCard();
+        });
+
+        initCards();
+    });
+    </script>
+
+</body>
+</html>
