@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul id="nav-menu">
+                    <!-- auth.js가 동적으로 채웁니다 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <section class="mypage-section">
+                <h2>👤 마이페이지</h2>
+                <div id="user-info" class="user-info-card">
+                    <!-- auth.js가 사용자 정보를 채웁니다 -->
+                    <p>정보를 불러오는 중...</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>회사소개 | 이용약관 | 개인정보처리방침</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('petples_user'));
+            const userInfoDiv = document.getElementById('user-info');
+
+            if (user) {
+                userInfoDiv.innerHTML = `
+                    <h3>보호자 정보</h3>
+                    <p><strong>아이디:</strong> ${user.userid}</p>
+                    <p><strong>이름:</strong> ${user.ownerName}</p>
+                    <p><strong>나이:</strong> ${user.ownerAge}</p>
+                    <p><strong>성별:</strong> ${user.gender}</p>
+                    <p><strong>전화번호:</strong> ${user.phone}</p>
+                    <hr>
+                    <h3>반려견 정보</h3>
+                    <p><strong>견종:</strong> ${user.dogBreed}</p>
+                    <p><strong>성별:</strong> ${user.dogGender}</p>
+                    <p><strong>나이:</strong> ${user.dogAge}</p>
+                    <p><strong>크기:</strong> ${user.dogSize}</p>
+                    <p><strong>등록번호:</strong> ${user.dogRegNumber}</p>
+                `;
+            } else {
+                userInfoDiv.innerHTML = '<p>로그인 정보가 없습니다. <a href="signup.html">회원가입</a>을 먼저 진행해주세요.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>

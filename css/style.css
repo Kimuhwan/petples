@@ -26,6 +26,9 @@ a {
     background-color: #fff;
     padding: 15px 0;
     border-bottom: 1px solid #eee;
+}
+
+.header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -68,6 +71,32 @@ a {
 
 .nav a:hover {
     color: #ff7f50; /* 포인트 컬러 (산호색) */
+}
+
+/* 인증(로그인/회원가입) 네비게이션 */
+.auth-nav {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.auth-nav li {
+    margin-left: 15px;
+}
+
+.auth-nav a {
+    font-weight: 500;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.button-signup {
+    background-color: #ff7f50;
+    color: white !important;
+    padding: 8px 15px;
+    border-radius: 20px;
 }
 
 /* 메인 페이지 소개 섹션 */
@@ -250,6 +279,82 @@ section h2 {
 .description p {
     line-height: 1.8;
     color: #5f6368;
+}
+
+/* --- 회원가입/로그인 폼 스타일 --- */
+.form-section {
+    max-width: 500px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.form-section h2 {
+    border-bottom: none;
+    margin-bottom: 10px;
+}
+
+.form-section p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.auth-form {
+    text-align: left;
+}
+
+.auth-form h3 {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group input[type="tel"],
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
+}
+
+.radio-group label {
+    margin-right: 20px;
+}
+
+.button-primary {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+    background-color: #e66a3e;
 }
 
 

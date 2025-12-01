@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul id="nav-menu">
+                    <!-- auth.js가 동적으로 채웁니다 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <section class="form-section">
+                <h2>로그인</h2>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="userid">아이디</label>
+                        <input type="text" id="userid" name="userid" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="button-primary">로그인</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>회사소개 | 이용약관 | 개인정보처리방침</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userid = this.userid.value;
+            const password = this.password.value;
+
+            const storedUser = JSON.parse(localStorage.getItem('petples_user'));
+
+            if (storedUser && storedUser.userid === userid && storedUser.password === password) {
+                alert('로그인되었습니다.');
+                window.location.href = 'index.html';
+            } else {
+                alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+            }
+        });
+    </script>
+
+</body>
+</html>

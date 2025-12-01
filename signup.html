@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul id="nav-menu">
+                    <!-- auth.js가 동적으로 채웁니다 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <section class="form-section">
+                <h2>🐾 펫플스 회원가입</h2>
+                <p>보호자님과 반려견의 정보를 입력해주세요.</p>
+                <form id="signup-form" class="auth-form">
+                    <h3>보호자 정보</h3>
+                    <div class="form-group">
+                        <label for="userid">아이디</label>
+                        <input type="text" id="userid" name="userid" placeholder="사용할 아이디를 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input type="password" id="password" name="password" placeholder="사용할 비밀번호를 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="owner-name">이름</label>
+                        <input type="text" id="owner-name" name="ownerName" placeholder="견주님의 이름을 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="owner-age">나이</label>
+                        <input type="number" id="owner-age" name="ownerAge" placeholder="견주님의 나이를 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label>성별</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="gender" value="남성" required> 남성</label>
+                            <label><input type="radio" name="gender" value="여성" required> 여성</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">전화번호</label>
+                        <input type="tel" id="phone" name="phone" placeholder="'-' 없이 숫자만 입력" required>
+                    </div>
+                    <hr>
+                    <h3>반려견 정보</h3>
+                    <div class="form-group">
+                        <label for="dog-breed">강아지 견종</label>
+                        <input type="text" id="dog-breed" name="dogBreed" placeholder="예: 시바견" required>
+                    </div>
+                    <div class="form-group">
+                        <label>강아지 성별</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="dogGender" value="남아" required> 남아</label>
+                            <label><input type="radio" name="dogGender" value="여아" required> 여아</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dog-age">강아지 나이</label>
+                        <input type="number" id="dog-age" name="dogAge" placeholder="강아지의 나이를 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dog-size">강아지 크기</label>
+                        <select id="dog-size" name="dogSize" required>
+                            <option value="">선택하세요</option>
+                            <option value="소형견">소형견</option>
+                            <option value="중형견">중형견</option>
+                            <option value="대형견">대형견</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dog-reg-number">강아지 등록증 일련번호</label>
+                        <input type="text" id="dog-reg-number" name="dogRegNumber" placeholder="선택사항">
+                    </div>
+                    <button type="submit" class="button-primary">가입하기</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>회사소개 | 이용약관 | 개인정보처리방침</p>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // 폼 기본 제출 동작 방지
+
+            const formData = new FormData(this);
+            const user = {
+                userid: formData.get('userid'),
+                password: formData.get('password'), // 실제 서비스에서는 비밀번호를 암호화해야 합니다.
+                ownerName: formData.get('ownerName'),
+                ownerAge: formData.get('ownerAge'),
+                gender: formData.get('gender'),
+                phone: formData.get('phone'),
+                dogBreed: formData.get('dogBreed'),
+                dogGender: formData.get('dogGender'),
+                dogAge: formData.get('dogAge'),
+                dogSize: formData.get('dogSize'),
+                dogRegNumber: formData.get('dogRegNumber') || '미입력'
+            };
+
+            // 사용자 정보를 localStorage에 저장
+            localStorage.setItem('petples_user', JSON.stringify(user));
+
+            alert('회원가입이 완료되었습니다! 환영합니다!');
+            window.location.href = 'index.html'; // 메인 페이지로 이동
+        });
+    </script>
+
+</body>
+</html>

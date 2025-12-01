@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>산책 메이트 찾기 - 펫플스</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
@@ -13,15 +13,12 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <img src="app_icon.png" alt="펫플스 앱 아이콘">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
                 <h1><a href="index.html">펫플스</a></h1>
             </div>
             <nav class="nav">
-                <ul>
-                    <li><a href="community.html">커뮤니티</a></li>
-                    <li><a href="matching.html">산책 메이트 찾기</a></li>
-                    <li><a href="local.html">우리 동네</a></li>
-                    <li><a href="index.html#app-download">앱 다운로드</a></li>
+                <ul id="nav-menu">
+                    <!-- js/auth.js가 동적으로 메뉴를 채웁니다. -->
                 </ul>
             </nav>
         </div>
@@ -36,27 +33,27 @@
                     <div class="card-stack">
                         <!-- 카드 목록 -->
                         <div class="card">
-                            <img src="siba.png" alt="시바견">
+                            <img src="images/siba.png" alt="시바견">
                             <div class="card-info"><h3>콩이, 2</h3><p>시바견 | 여아</p></div>
                         </div>
                         <div class="card">
-                            <img src="pome.png" alt="포메라니안">
+                            <img src="images/pome.png" alt="포메라니안">
                             <div class="card-info"><h3>뭉치, 1</h3><p>포메라니안 | 남아</p></div>
                         </div>
                         <div class="card">
-                            <img src="daks.png" alt="닥스훈트">
+                            <img src="images/daks.png" alt="닥스훈트">
                             <div class="card-info"><h3>초코, 5</h3><p>닥스훈트 | 여아</p></div>
                         </div>
                         <div class="card">
-                            <img src="rit.png" alt="리트리버">
+                            <img src="images/rit.png" alt="리트리버">
                             <div class="card-info"><h3>리트리버, 3</h3><p>골든 리트리버 | 남아</p></div>
                         </div>
                         <div class="card">
-                            <img src="beagle.png" alt="비글">
+                            <img src="images/beagle.png" alt="비글">
                             <div class="card-info"><h3>여름이, 2</h3><p>비글 | 여아</p></div>
                         </div>
                         <div class="card">
-                            <img src="corgi.png" alt="웰시코기">
+                            <img src="images/corgi.png" alt="웰시코기">
                             <div class="card-info"><h3>마루, 4</h3><p>웰시코기 | 남아</p></div>
                         </div>
                         <p id="no-more-cards">더 이상 추천할 친구가 없어요!</p>
@@ -75,6 +72,7 @@
         </div>
     </footer>
 
+    <script src="auth.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const cardStack = document.querySelector('.card-stack');

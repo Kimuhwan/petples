@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우리 동네 - 펫플스</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <!-- 구글 폰트 Noto Sans KR 로드 (선택 사항) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,20 +20,16 @@
     <header class="header">
         <div class="container">
             <div class="logo">
-                <img src="app_icon.png" alt="펫플스 앱 아이콘">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
                 <h1><a href="index.html">펫플스</a></h1>
             </div>
             <nav class="nav">
-                <ul>
-                    <li><a href="community.html">커뮤니티</a></li>
-                    <li><a href="matching.html">산책 메이트 찾기</a></li>
-                    <li><a href="local.html">우리 동네</a></li>
-                    <li><a href="index.html#app-download">앱 다운로드</a></li>
+                <ul id="nav-menu">
+                    <!-- js/auth.js가 동적으로 메뉴를 채웁니다. -->
                 </ul>
             </nav>
         </div>
     </header>
-
     <!-- 메인 콘텐츠 -->
     <main class="main-content">
         <div class="container">
@@ -54,6 +50,7 @@
         </div>
     </footer>
 
+    <script src="auth.js"></script>
     <script>
         // Leaflet.js를 사용하여 지도 생성
         // 1. 지도 초기화. 'map'은 지도를 표시할 div의 id입니다.
