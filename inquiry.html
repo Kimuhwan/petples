@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1 문의 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .inquiry-container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .accordion-item {
+            background-color: #fff;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            padding: 15px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        .accordion-header::after {
+            content: '▼';
+            font-size: 12px;
+            transition: transform 0.3s;
+        }
+        .accordion-item.active .accordion-header::after {
+            transform: rotate(180deg);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            background-color: #f9f9f9;
+        }
+        .accordion-content p {
+            margin: 0;
+            padding: 20px;
+            line-height: 1.7;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul id="nav-menu">
+                    <!-- auth.js가 동적으로 채웁니다 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="inquiry-container">
+            <h2>🙋 1:1 문의 (FAQ)</h2>
+            <div id="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">매칭은 어떻게 하나요?</div>
+                    <div class="accordion-content">
+                        <p>A. '산책 메이트 찾기' 페이지에서 추천되는 친구들의 프로필 카드를 확인하고, 마음에 들면 오른쪽으로 스와이프하거나 '좋아요(💚)' 버튼을 누르세요. 상대방도 나를 '좋아요'하면 매칭이 완료되어 대화를 시작할 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">프로필 정보는 어떻게 수정하나요?</div>
+                    <div class="accordion-content">
+                        <p>A. 로그인 후 '마이페이지'로 이동하여 '내 프로필 관리' 또는 '강아지 프로필 관리' 버튼을 클릭하면 정보를 수정할 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">사용자를 차단하고 싶어요.</div>
+                    <div class="accordion-content">
+                        <p>A. '산책 메이트 찾기' 페이지에서 프로필 카드 아래의 '차단(🚫)' 버튼을 누르면 해당 사용자는 더 이상 추천 목록에 나타나지 않으며, '차단 목록' 탭에서 관리할 수 있습니다.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">회원 탈퇴는 어떻게 하나요?</div>
+                    <div class="accordion-content">
+                        <p>A. 현재 회원 탈퇴 기능은 준비 중입니다. 빠른 시일 내에 기능을 추가하도록 하겠습니다. 불편을 드려 죄송합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const content = header.nextElementSibling;
+
+                item.classList.toggle('active');
+
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

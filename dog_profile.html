@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>강아지 프로필 관리 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="form-section">
+            <h2>강아지 프로필 관리</h2>
+            <p>강아지 프로필 정보를 수정할 수 있습니다.</p>
+            <form id="dog-profile-form" class="auth-form">
+                <div class="form-group">
+                    <label for="dog-name">이름</label>
+                    <input type="text" id="dog-name" name="dog_name" value="">
+                </div>
+                <div class="form-group">
+                    <label for="dog-breed">견종</label>
+                    <input type="text" id="dog-breed" name="dog_breed" value="">
+                </div>
+                <div class="form-group">
+                    <label for="dog-age">나이</label>
+                    <input type="number" id="dog-age" name="dog_age" value="">
+                </div>
+                <div class="form-group">
+                    <label for="dog-gender">성별</label>
+                    <select id="dog-gender" name="dog_gender" value="">
+                        <option value="male">수컷</option>
+                        <option value="female">암컷</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dog-weight">몸무게 (kg)</label>
+                    <input type="number" id="dog-weight" name="dog_weight" value="" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="dog-photo">사진</label>
+                    <input type="file" id="dog-photo" name="dog_photo" accept="image/*">
+                </div>
+                <button type="submit" class="button-primary">저장하기</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Petples. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('petples_user'));
+            if (!user) {
+                alert('로그인이 필요합니다.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // 폼에 기존 강아지 정보 채우기
+            document.getElementById('dog-name').value = user.dog_name || '';
+            document.getElementById('dog-breed').value = user.dog_breed || '';
+            document.getElementById('dog-age').value = user.dog_age || '';
+            document.getElementById('dog-gender').value = user.dog_gender || '수컷';
+            document.getElementById('dog-weight').value = user.dog_weight || '';
+
+            // 폼 제출 이벤트 처리
+            document.getElementById('dog-profile-form').addEventListener('submit', (event) => {
+                event.preventDefault();
+                
+                // 수정된 정보로 user 객체 업데이트
+                user.dog_name = document.getElementById('dog-name').value;
+                user.dog_breed = document.getElementById('dog-breed').value;
+                user.dog_age = document.getElementById('dog-age').value;
+                user.dog_gender = document.getElementById('dog-gender').value;
+                user.dog_weight = document.getElementById('dog-weight').value;
+
+                localStorage.setItem('petples_user', JSON.stringify(user));
+                alert('강아지 프로필이 성공적으로 수정되었습니다.');
+            });
+        });
+    </script>
+</body>
+</html>

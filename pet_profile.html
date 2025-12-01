@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>반려동물 프로필 관리 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="form-section">
+            <h2>반려동물 프로필 관리</h2>
+            <p>반려동물 프로필 정보를 수정할 수 있습니다.</p>
+            <form id="pet-profile-form" class="auth-form">
+                <div class="form-group">
+                    <label for="pet-name">이름</label>
+                    <input type="text" id="pet-name" name="pet_name" value="">
+                </div>
+                <div class="form-group">
+                    <label for="pet-type">동물 종류</label>
+                    <select id="pet-type" name="pet_type">
+                        <option value="강아지">강아지</option>
+                        <option value="고양이">고양이</option>
+                        <option value="앵무새">앵무새</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pet-breed">품종</label>
+                    <input type="text" id="pet-breed" name="pet_breed" value="">
+                </div>
+                <div class="form-group">
+                    <label for="pet-age">나이</label>
+                    <input type="number" id="pet-age" name="pet_age" value="">
+                </div>
+                <div class="form-group">
+                    <label for="pet-gender">성별</label>
+                    <select id="pet-gender" name="pet_gender">
+                        <option value="수컷">수컷</option>
+                        <option value="암컷">암컷</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pet-weight">몸무게 (kg)</label>
+                    <input type="number" id="pet-weight" name="pet_weight" value="" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label for="pet-photo">사진</label>
+                    <input type="file" id="pet-photo" name="pet_photo" accept="image/*">
+                </div>
+                <button type="submit" class="button-primary">저장하기</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Petples. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('petples_user'));
+            if (!user) {
+                alert('로그인이 필요합니다.');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // 폼에 기존 반려동물 정보 채우기
+            document.getElementById('pet-name').value = user.pet_name || ''; // pet_name은 signup에 없지만 추가
+            document.getElementById('pet-type').value = user.pet_type || '강아지';
+            document.getElementById('pet-breed').value = user.pet_breed || '';
+            document.getElementById('pet-age').value = user.pet_age || '';
+            document.getElementById('pet-gender').value = user.pet_gender || '수컷';
+            document.getElementById('pet-weight').value = user.pet_weight || '';
+
+            // 폼 제출 이벤트 처리
+            document.getElementById('pet-profile-form').addEventListener('submit', (event) => {
+                event.preventDefault();
+                
+                // 수정된 정보로 user 객체 업데이트
+                user.pet_name = document.getElementById('pet-name').value;
+                user.pet_type = document.getElementById('pet-type').value;
+                user.pet_breed = document.getElementById('pet-breed').value;
+                user.pet_age = document.getElementById('pet-age').value;
+                user.pet_gender = document.getElementById('pet-gender').value;
+                user.pet_weight = document.getElementById('pet-weight').value;
+
+                localStorage.setItem('petples_user', JSON.stringify(user));
+                alert('반려동물 프로필이 성공적으로 수정되었습니다.');
+                window.location.href = 'mypage.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .chat-container {
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            height: 70vh;
+        }
+        .chat-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chat-header img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .chat-header .owner-info {
+            text-align: left;
+        }
+        .chat-header .owner-info .name {
+            font-size: 16px;
+        }
+        .chat-header .owner-info .age {
+            font-size: 12px;
+            color: #888;
+            font-weight: normal;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 70%;
+            line-height: 1.4;
+        }
+        .message.sent {
+            background-color: #ff7f50;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .message.received {
+            background-color: #f1f0f0;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        .chat-input input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            padding: 10px 15px;
+            margin-right: 10px;
+        }
+        .chat-input button {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background-color: #ff7f50;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .example-chats {
+            padding: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            border-top: 1px solid #eee;
+        }
+        .example-chats button {
+            background-color: #f1f0f0;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="chat-container">
+            <div class="chat-header" id="chat-header">
+                <!-- 견주 정보가 여기에 동적으로 삽입됩니다. -->
+            </div>
+            <div class="chat-messages" id="chat-messages">
+            </div>
+            <div class="example-chats">
+                <button class="example-btn" data-question="언제 시간 괜찮으세요?">언제 시간 괜찮으세요?</button>
+                <button class="example-btn" data-question="어디서 만날까요?">어디서 만날까요?</button>
+                <button class="example-btn" data-question="강아지가 몇 살이에요?">강아지가 몇 살이에요?</button>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="메시지 입력...">
+                <button id="send-btn">전송</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const dogName = params.get('with') || '친구';
+
+            // 목(Mock) 데이터베이스: 견주 정보 포함
+            const petDatabase = {
+                '콩이': { dog: { name: '콩이, 2'}, owner: { name: '김시바', age: 28, imgSrc: 'images/siba.png' }, answers: { '언제 시간 괜찮으세요?': '저는 주말 오후가 좋아요!', '어디서 만날까요?': '서울숲에서 만나면 어떨까요?', '강아지가 몇 살이에요?': '저희 콩이는 2살이에요!' } },
+                '뭉치': { dog: { name: '뭉치, 1'}, owner: { name: '이포메', age: 25, imgSrc: 'images/pome.png' }, answers: { '언제 시간 괜찮으세요?': '평일 저녁에 시간 괜찮아요.', '어디서 만날까요?': '한강 공원도 좋을 것 같아요!', '강아지가 몇 살이에요?': '뭉치는 이제 1살이에요.' } },
+                '초코': { dog: { name: '초코, 5'}, owner: { name: '박닥스', age: 32, imgSrc: 'images/daks.png' }, answers: { '언제 시간 괜찮으세요?': '저는 시간은 다 괜찮아요!', '어디서 만날까요?': '가까운 공원에서 만나요!', '강아지가 몇 살이에요?': '초코는 5살입니다!' } },
+                '리트리버': { dog: { name: '리트리버, 3'}, owner: { name: '최골든', age: 30, imgSrc: 'images/rit.png' }, answers: { '언제 시간 괜찮으세요?': '주중 오후가 좋아요.', '어디서 만날까요?': '근처 카페에서 만날까요?', '강아지가 몇 살이에요?': '3살 된 리트리버입니다.' } },
+                '여름이': { dog: { name: '여름이, 2'}, owner: { name: '정비글', age: 27, imgSrc: 'images/beagle.png' }, answers: { '언제 시간 괜찮으세요?': '저는 주말이 좋아요!', '어디서 만날까요?': '근처 공원에서 만나요!', '강아지가 몇 살이에요?': '여름이는 2살이에요.' } },
+                '마루': { dog: { name: '마루, 4'}, owner: { name: '한코기', age: 29, imgSrc: 'images/corgi.png' }, answers: { '언제 시간 괜찮으세요?': '저는 저녁 시간이 좋아요.', '어디서 만날까요?': '동네 산책로에서 만나요!', '강아지가 몇 살이에요?': '마루는 4살이에요.' } },
+                '코코': { dog: { name: '코코, 3'}, owner: { name: '김앵무', age: 26, imgSrc: 'images/parrot.png' }, answers: { '언제 시간 괜찮으세요?': '오후 시간은 다 괜찮아요!', '어디서 만날까요?': '조용한 공원이면 좋겠어요.', '강아지가 몇 살이에요?': '저희 코코는 3살이에요. 앵무새랍니다!' } }
+
+            };
+
+            const partner = petDatabase[dogName] || { dog: {name: '친구'}, owner: { name: '견주', age: '??', imgSrc: 'images/app_icon.png' }, answers: {} };
+            const chatHeader = document.getElementById('chat-header');
+            const chatMessages = document.getElementById('chat-messages');
+            const messageInput = document.getElementById('message-input');
+            const sendBtn = document.getElementById('send-btn');
+
+            // 헤더에 상대방 견주 정보 표시
+            chatHeader.innerHTML = `
+                <a href="profile.html?dog=${dogName}"><img src="${partner.owner.imgSrc}" alt="${partner.owner.name}"></a>
+                <div class="owner-info">
+                    <div class="name">${partner.owner.name}</div>
+                    <div class="age">${partner.owner.age}세</div>
+                </div>
+            `;
+
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // 스크롤을 맨 아래로
+            }
+
+            // 전송 버튼 클릭 이벤트
+            sendBtn.addEventListener('click', () => {
+                const messageText = messageInput.value.trim();
+                if (messageText) {
+                    addMessage(messageText, 'sent');
+                    messageInput.value = '';
+                }
+            });
+
+            // 엔터 키로 메시지 전송
+            messageInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendBtn.click();
+                }
+            });
+
+            // 예시 대화 버튼 이벤트
+            document.querySelectorAll('.example-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const question = button.dataset.question;
+                    addMessage(question, 'sent');
+
+                    // 상대방 답변 시뮬레이션
+                    setTimeout(() => {
+                        const answer = partner.answers[question] || "글쎄요, 잘 모르겠네요.";
+                        addMessage(answer, 'received');
+                    }, 1000); // 1초 후 답변
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+    <script>
+        // 로그인 상태 확인 (localStorage에 사용자 정보가 있는지 확인)
+        if (!localStorage.getItem('petples_user')) {
+            // 로그인되지 않았을 경우 로그인 페이지로 리다이렉트
+            alert('로그인이 필요합니다.');
+            window.location.href = 'login.html'; // 로그인 페이지 URL로 변경
+        }
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>산책 메이트 찾기 - 펫플스</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 탭 스타일 추가 */
+        .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }
+        .tab-button { padding: 10px 20px; cursor: pointer; background: none; border: none; font-size: 16px; font-weight: 500; color: #888; }
+        .tab-button.active { color: #ff7f50; border-bottom: 2px solid #ff7f50; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        /* 차단 목록 스타일 추가 */
+        .blocked-user-list li { display: flex; align-items: center; gap: 15px; }
+        .blocked-user-list img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .blocked-user-list .user-details { flex-grow: 1; }
+        .unblock-btn { padding: 5px 10px; border: 1px solid #ccc; background-color: #f8f8f8; cursor: pointer; border-radius: 4px; }
 
+    </style>
 </head>
 <body>
 
@@ -28,37 +49,121 @@
     <main class="main-content">
         <div class="container">
             <section>
-                <h2>🤝 산책 메이트를 찾아보세요!</h2>
-                <div class="matching-container">
+                <div class="tabs">
+                    <button class="tab-button active" onclick="openTab(event, 'Matching')">추천</button>
+                    <button class="tab-button" onclick="openTab(event, 'Blocked')">차단 목록</button>
+                </div>
+
+                <!-- 추천 탭 -->
+                <div id="Matching" class="tab-content active">
+                    <h2>🤝 산책 메이트를 찾아보세요!</h2>
+                    <div class="matching-container">
                     <div class="card-stack">
                         <!-- 카드 목록 -->
                         <div class="card">
                             <img src="images/siba.png" alt="시바견">
-                            <div class="card-info"><h3>콩이, 2</h3><p>시바견 | 여아</p></div>
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>콩이, 2</h3>
+                                    <div class="manner-temp">
+                                        <span>37.2℃</span>
+                                        <progress value="37.2" max="100"></progress>
+                                    </div>
+                                </div>
+                                <p>시바견 | 여아</p>
+                            </div>
                         </div>
                         <div class="card">
                             <img src="images/pome.png" alt="포메라니안">
-                            <div class="card-info"><h3>뭉치, 1</h3><p>포메라니안 | 남아</p></div>
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>뭉치, 1</h3>
+                                    <div class="manner-temp">
+                                        <span>36.5℃</span>
+                                        <progress value="36.5" max="100"></progress>
+                                    </div>
+                                </div>
+                                <p>포메라니안 | 남아</p>
+                            </div>
                         </div>
                         <div class="card">
                             <img src="images/daks.png" alt="닥스훈트">
-                            <div class="card-info"><h3>초코, 5</h3><p>닥스훈트 | 여아</p></div>
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>초코, 5</h3>
+                                    <div class="manner-temp">
+                                        <span>38.1℃</span>
+                                        <progress value="38.1" max="100"></progress>
+                                    </div>
+                                </div>
+                                <p>닥스훈트 | 여아</p>
+                            </div>
                         </div>
                         <div class="card">
                             <img src="images/rit.png" alt="리트리버">
-                            <div class="card-info"><h3>리트리버, 3</h3><p>골든 리트리버 | 남아</p></div>
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>리트리버, 3</h3>
+                                    <div class="manner-temp">
+                                        <span>36.8℃</span>
+                                        <progress value="36.8" max="100"></progress>
+                                    </div>
+                                </div>
+                                <p>골든 리트리버 | 남아</p>
+                            </div>
                         </div>
                         <div class="card">
                             <img src="images/beagle.png" alt="비글">
-                            <div class="card-info"><h3>여름이, 2</h3><p>비글 | 여아</p></div>
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>여름이, 2</h3>
+                                    <div class="manner-temp">
+                                        <span>35.9℃</span>
+                                        <progress value="35.9" max="100"></progress>
+                                    </div>
+                                </div>
+                                <p>비글 | 여아</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <img src="images/parrot.png" alt="앵무새">
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>코코, 3</h3>
+                                </div>
+                                <p>모란앵무 | 남아</p>
+                            </div>
                         </div>
                         <div class="card">
                             <img src="images/corgi.png" alt="웰시코기">
-                            <div class="card-info"><h3>마루, 4</h3><p>웰시코기 | 남아</p></div>
+                            <div class="card-info">
+                                <div class="card-info-header">
+                                    <h3>마루, 4</h3>
+                                    <div class="manner-temp">
+                                        <span>39.0℃</span>
+                                        <progress value="39.0" max="100"></progress>
+                                    </div>
+                                </div>
+                                <p>웰시코기 | 남아</p>
+                            </div>
                         </div>
                         <p id="no-more-cards">더 이상 추천할 친구가 없어요!</p>
                     </div>
-                    <div class="action-buttons"><button class="btn-dislike">❌</button><button class="btn-superlike">⭐</button><button class="btn-like">💚</button></div>
+                        <div class="action-buttons">
+                            <button class="btn-dislike" title="싫어요">❌</button>
+                            <button class="btn-block" title="차단">🚫</button>
+                            <button class="btn-like" title="좋아요">💚</button>
+                            <button class="btn-superlike" title="슈퍼라이크">⭐</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 차단 목록 탭 -->
+                <div id="Blocked" class="tab-content">
+                    <h2>🚫 차단된 사용자</h2>
+                    <ul id="blocked-list" class="blocked-user-list">
+                        <!-- 차단된 사용자가 여기에 표시됩니다. -->
+                    </ul>
                 </div>
             </section>
         </div>
@@ -76,22 +181,90 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const cardStack = document.querySelector('.card-stack');
-        let cards = Array.from(cardStack.querySelectorAll('.card'));
         const noMoreCardsMsg = document.getElementById('no-more-cards');
+        const blockedListUl = document.getElementById('blocked-list');
 
         let activeCard = null;
         let startX = 0, startY = 0;
         let isDragging = false;
+        let blockedUsers = JSON.parse(localStorage.getItem('blocked_users')) || [];
+        const currentUser = JSON.parse(localStorage.getItem('petples_user'));
+        const preferredBreed = currentUser ? currentUser.preferred_breed.toLowerCase() : '';
+        let allCards = [];
 
         function initCards() {
-            cards = Array.from(cardStack.querySelectorAll('.card'));
-            if (cards.length > 0) {
-                activeCard = cards[0]; // 맨 위 카드를 활성화
+            if (allCards.length === 0) { // 최초 로드 시에만 카드 목록을 가져옴
+                allCards = Array.from(cardStack.querySelectorAll('.card'));
+
+                // 선호 품종에 따라 카드 정렬
+                if (preferredBreed && preferredBreed !== '미입력') {
+                    allCards.sort((a, b) => {
+                        const breedA = a.querySelector('p').textContent.toLowerCase();
+                        const breedB = b.querySelector('p').textContent.toLowerCase();
+                        const aIsPreferred = breedA.includes(preferredBreed);
+                        const bIsPreferred = breedB.includes(preferredBreed);
+
+                        if (aIsPreferred && !bIsPreferred) return -1; // a를 앞으로
+                        if (!aIsPreferred && bIsPreferred) return 1;  // b를 앞으로
+                        return 0; // 순서 유지
+                    });
+                }
+            }
+
+            // 보이는 카드만 필터링
+            const visibleCards = allCards.filter(card => {
+                if (!card.parentElement) return false; // DOM에서 제거된 카드는 제외
+                const dogName = card.querySelector('h3').textContent.split(',')[0];
+                // 차단 목록에 이름이 없는 카드만 필터링
+                return !blockedUsers.some(user => user.name === dogName);
+            });
+
+            // 모든 카드를 일단 숨깁니다.
+            allCards.forEach(card => card.style.display = 'none');
+
+            if (visibleCards.length > 0) {
+                // 보여줄 카드들만 다시 화면에 표시합니다.
+                // 먼저 모든 카드에서 스택 효과 클래스를 제거하고 transform을 초기화합니다.
+                allCards.forEach(card => {
+                    card.classList.remove('stacked');
+                    card.style.transform = '';
+                });
+
+                visibleCards.forEach((card, index) => {
+                    card.style.display = 'flex'; // flex로 다시 보이게 함
+                    card.style.zIndex = visibleCards.length - index; // z-index 재설정
+                    // 보이는 카드 중 2번째, 3번째 카드에만 스택 효과를 다시 적용합니다.
+                    if (index === 1 || index === 2) {
+                        card.classList.add('stacked');
+                    }
+                });
+                
+                // activeCard를 올바르게 설정합니다.
+                activeCard = visibleCards[0];
                 noMoreCardsMsg.style.display = 'none';
                 attachEventListeners(activeCard);
             } else {
                 activeCard = null;
                 noMoreCardsMsg.style.display = 'block';
+            }
+            renderBlockedList();
+        }
+
+        function renderBlockedList() {
+            blockedListUl.innerHTML = '';
+            if (blockedUsers.length === 0) {
+                const li = document.createElement('li');
+                li.textContent = '차단한 사용자가 없습니다.';
+                blockedListUl.appendChild(li);
+            } else {
+                blockedUsers.forEach(user => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <img src="${user.imgSrc}" alt="${user.name}">
+                        <span class="user-details">${user.name}</span>
+                        <button class="unblock-btn" data-name="${user.name}">차단 해제</button>`;
+                    blockedListUl.appendChild(li);
+                });
             }
         }
 
@@ -124,11 +297,18 @@
             activeCard.classList.remove('dragging');
 
             const deltaX = e.pageX - startX;
+            const deltaY = e.pageY - startY;
             const decisionThreshold = 100; // 이 거리 이상 움직이면 결정
 
             if (Math.abs(deltaX) > decisionThreshold) {
                 const direction = deltaX > 0 ? 1 : -1;
-                swipeCard(direction);
+                if (direction === 1) { // 오른쪽 스와이프 (Like)
+                    openChat(activeCard);
+                }
+                swipeCard(direction); // 왼쪽 또는 오른쪽으로 카드 날리기
+            } else if (deltaY < -decisionThreshold) { // 위로 스와이프 (SuperLike)
+                openChat(activeCard);
+                superLikeCard();
             } else {
                 // 원래 위치로 복귀
                 activeCard.style.transform = '';
@@ -166,17 +346,92 @@
             }, { once: true });
         }
 
+        function openChat(card) {
+            const dogName = card.querySelector('h3').textContent.split(',')[0];
+            if (confirm(`${dogName}님과 대화를 시작할까요?`)) {
+                // localStorage에 채팅방 정보 저장
+                const chatRooms = JSON.parse(localStorage.getItem('petples_chat_rooms')) || [];
+                const dogImgSrc = card.querySelector('img').src;
+
+                // 이미 채팅방이 있는지 확인
+                const isExisting = chatRooms.some(room => room.name === dogName);
+
+                if (!isExisting) {
+                    const newRoom = {
+                        name: dogName,
+                        imgSrc: dogImgSrc,
+                        lastMessage: '매칭이 성사되었습니다! 대화를 시작해보세요.',
+                        time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: true })
+                    };
+                    chatRooms.unshift(newRoom); // 새 채팅방을 맨 위에 추가
+                    localStorage.setItem('petples_chat_rooms', JSON.stringify(chatRooms));
+                }
+                window.location.href = `chat.html?with=${dogName}`;
+            }
+        }
+
+        function blockUser() {
+            if (!activeCard) return;
+            const dogName = activeCard.querySelector('h3').textContent.split(',')[0];
+            const dogImgSrc = activeCard.querySelector('img').src;
+
+            // 이미 차단된 사용자인지 확인
+            if (!blockedUsers.some(user => user.name === dogName)) {
+                blockedUsers.push({ name: dogName, imgSrc: dogImgSrc });
+                localStorage.setItem('blocked_users', JSON.stringify(blockedUsers));
+                alert(`${dogName}님을 차단했습니다.`);
+                renderBlockedList();
+            }
+            // 현재 카드를 즉시 제거하고 다음 카드를 준비
+            activeCard.remove();
+            initCards();
+        }
+
         // 버튼 클릭 이벤트
         document.querySelector('.btn-dislike').addEventListener('click', () => swipeCard(-1));
-        document.querySelector('.btn-like').addEventListener('click', () => swipeCard(1));
+
+        document.querySelector('.btn-like').addEventListener('click', () => {
+            if (!activeCard) return;
+            openChat(activeCard);
+            swipeCard(1);
+        });
+
         document.querySelector('.btn-superlike').addEventListener('click', () => {
-            // 슈퍼 라이크 버튼 클릭 시 새로운 애니메이션 함수 호출
+            if (!activeCard) return;
+            openChat(activeCard);
             superLikeCard();
+        });
+
+        document.querySelector('.btn-block').addEventListener('click', blockUser);
+
+        blockedListUl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('unblock-btn')) {
+                const nameToUnblock = e.target.dataset.name;
+                blockedUsers = blockedUsers.filter(user => user.name !== nameToUnblock);
+                localStorage.setItem('blocked_users', JSON.stringify(blockedUsers));
+                alert(`${nameToUnblock}님을 차단 해제했습니다. 새로고침 시 추천 목록에 다시 나타날 수 있습니다.`);
+                renderBlockedList();
+                // 차단 해제 후 추천 목록을 다시 로드하려면 initCards()를 호출하거나 페이지를 새로고침해야 합니다.
+            }
         });
 
         initCards();
     });
-    </script>
 
+    // 탭 기능
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+    </script>
 </body>
 </html>

@@ -13,6 +13,14 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
+    <style>
+        /* 탭 스타일 추가 */
+        .tabs { display: flex; border-bottom: 2px solid #eee; margin-bottom: 20px; }
+        .tab-button { padding: 10px 20px; cursor: pointer; background: none; border: none; font-size: 16px; font-weight: 500; color: #888; }
+        .tab-button.active { color: #ff7f50; border-bottom: 2px solid #ff7f50; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
 <body>
 
@@ -34,10 +42,22 @@
     <main class="main-content">
         <div class="container">
             <section>
-                <h2>🏡 우리 동네</h2>
-                <p>지도에서 우리 동네의 동물병원, 애견 카페 등 유용한 장소들을 확인해보세요!</p>
-                <!-- 지도를 표시할 div 입니다 -->
-                <div id="map" style="width:100%;height:500px;margin-top: 20px; border-radius: 8px;"></div>
+                <div class="tabs">
+                    <button class="tab-button active" onclick="openTab(event, 'LocalPlaces')">우리 동네</button>
+                    <button class="tab-button" onclick="openTab(event, 'WalkingRoutes')">추천 산책경로</button>
+                </div>
+
+                <!-- 우리 동네 탭 -->
+                <div id="LocalPlaces" class="tab-content active">
+                    <p>지도에서 우리 동네의 동물병원, 애견 카페 등 유용한 장소들을 확인해보세요!</p>
+                    <div id="map" style="width:100%;height:500px;margin-top: 20px; border-radius: 8px;"></div>
+                </div>
+
+                <!-- 추천 산책경로 탭 -->
+                <div id="WalkingRoutes" class="tab-content">
+                    <p>우리 동네의 추천 산책 경로를 확인해보세요!</p>
+                    <div id="route-map" style="width:100%;height:500px;margin-top: 20px; border-radius: 8px;"></div>
+                </div>
             </section>
         </div>
     </main>
@@ -52,32 +72,77 @@
 
     <script src="auth.js"></script>
     <script>
-        // Leaflet.js를 사용하여 지도 생성
-        // 1. 지도 초기화. 'map'은 지도를 표시할 div의 id입니다.
-        //    [위도, 경도] 형식으로 중심 좌표를 설정하고, 확대 레벨(zoom)을 지정합니다. (서울 시청 기준)
-        var map = L.map('map').setView([37.566826, 126.9786567], 14);
+        let map, routeMap;
 
-        // 2. 지도 타일(배경)을 설정하고 추가합니다. OpenStreetMap 타일을 사용합니다.
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        function initLocalPlacesMap() {
+            // 지도가 이미 초기화되었다면 다시 실행하지 않음
+            if (map) return;
 
-        // 3. 동물병원 위치 데이터 (예시)
-        //    이름과 [위도, 경도] 좌표를 포함하는 배열입니다.
-        var hospitals = [
-            { name: '광화문 슈샤 동물병원', latlng: [37.5720, 126.9750] },
-            { name: '남산 동물병원', latlng: [37.5603, 126.9830] },
-            { name: '충무로 동물종합병원', latlng: [37.5620, 126.9940] },
-            { name: '대한 동물병원', latlng: [37.5680, 126.9700] }
-        ];
+            map = L.map('map').setView([37.566826, 126.9786567], 14); // 서울 시청 기준
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-        // 4. 반복문을 사용해 여러 마커를 지도에 추가합니다.
-        hospitals.forEach(function(hospital) {
-            L.marker(hospital.latlng) // hospital.latlng 좌표에 마커를 생성합니다.
-                .addTo(map) // 생성된 마커를 지도에 추가합니다.
-                .bindPopup('<b>' + hospital.name + '</b>'); // 마커를 클릭했을 때 표시될 팝업을 연결합니다.
-        });
+            var hospitals = [
+                { name: '광화문 슈샤 동물병원', latlng: [37.5720, 126.9750] },
+                { name: '남산 동물병원', latlng: [37.5603, 126.9830] },
+                { name: '충무로 동물종합병원', latlng: [37.5620, 126.9940] },
+                { name: '대한 동물병원', latlng: [37.5680, 126.9700] }
+            ];
 
+            hospitals.forEach(function(hospital) {
+                L.marker(hospital.latlng).addTo(map).bindPopup('<b>' + hospital.name + '</b>');
+            });
+        }
+
+        function initRouteMap() {
+            // 지도가 이미 초기화되었다면 다시 실행하지 않음
+            if (routeMap) return;
+
+            // 서울숲 좌표를 중심으로 지도 생성
+            routeMap = L.map('route-map').setView([37.544, 127.039], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(routeMap);
+
+            // 예시 산책 경로 좌표 배열 (서울숲)
+            var routeLatLngs = [
+                [37.5460, 127.0380],
+                [37.5455, 127.0400],
+                [37.5430, 127.0415],
+                [37.5415, 127.0395],
+                [37.5425, 127.0370]
+            ];
+
+            // Polyline을 사용하여 경로를 지도에 그립니다.
+            var polyline = L.polyline(routeLatLngs, {color: 'red'}).addTo(routeMap);
+
+            // 경로의 시작과 끝에 마커 추가
+            L.marker(routeLatLngs[0]).addTo(routeMap).bindPopup('<b>산책 시작점</b>');
+            L.marker(routeLatLngs[routeLatLngs.length - 1]).addTo(routeMap).bindPopup('<b>산책 종료점</b>');
+        }
+
+        // 탭 기능
+        function openTab(evt, tabName) {
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+
+            // 탭이 활성화될 때 해당 탭의 지도를 초기화합니다.
+            if (tabName === 'LocalPlaces') initLocalPlacesMap();
+            if (tabName === 'WalkingRoutes') initRouteMap();
+        }
+
+        // 페이지 로드 시 기본 탭(우리 동네)의 지도를 초기화합니다.
+        document.addEventListener('DOMContentLoaded', initLocalPlacesMap);
     </script>
 
 </body>

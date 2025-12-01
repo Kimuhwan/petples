@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필 보기 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-card {
+            max-width: 500px;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .profile-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .profile-info {
+            padding: 25px;
+        }
+        .profile-info h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        .profile-info p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 16px;
+        }
+        .profile-info hr {
+            margin: 20px 0;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div id="profile-container">
+                <!-- 프로필 정보가 여기에 동적으로 삽입됩니다. -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 프로필 표시를 위한 목(Mock) 데이터베이스
+            const petDatabase = {
+                '콩이': { name: '콩이, 2', breed: '시바견 | 여아', imgSrc: 'images/siba.png', personality: '활발하고 친구를 좋아해요.' },
+                '뭉치': { name: '뭉치, 1', breed: '포메라니안 | 남아', imgSrc: 'images/pome.png', personality: '겁이 많지만 순해요.' },
+                '초코': { name: '초코, 5', breed: '닥스훈트 | 여아', imgSrc: 'images/daks.png', personality: '에너지가 넘쳐요! 같이 뛰는 걸 좋아해요.' },
+                '리트리버': { name: '리트리버, 3', breed: '골든 리트리버 | 남아', imgSrc: 'images/rit.png', personality: '사람을 잘 따르는 순둥이입니다.' },
+                '여름이': { name: '여름이, 2', breed: '비글 | 여아', imgSrc: 'images/beagle.png', personality: '호기심이 많고 장난치는 걸 좋아해요.' },
+                '마루': { name: '마루, 4', breed: '웰시코기 | 남아', imgSrc: 'images/corgi.png', personality: '엉덩이가 매력적인 빵실이입니다.' },
+                '코코': { name: '코코, 3', breed: '모란앵무 | 남아', imgSrc: 'images/parrot.png', personality: '말하는 걸 좋아하고 애교가 많아요.' }
+            };
+
+            const params = new URLSearchParams(window.location.search);
+            const petName = params.get('dog'); // URL 파라미터는 다른 페이지와의 호환성을 위해 'dog'를 유지
+            const profileContainer = document.getElementById('profile-container');
+
+            const petProfile = petDatabase[petName];
+
+            if (petProfile) {
+                profileContainer.innerHTML = `
+                    <div class="profile-card">
+                        <img src="${petProfile.imgSrc}" alt="${petName}">
+                        <div class="profile-info">
+                            <h2>${petProfile.name}</h2>
+                            <p><strong>품종/성별:</strong> ${petProfile.breed}</p>
+                            <hr>
+                            <p><strong>성격:</strong></p>
+                            <p>${petProfile.personality}</p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                profileContainer.innerHTML = '<p style="text-align: center;">프로필 정보를 찾을 수 없습니다.</p>';
+            }
+        });
+    </script>
+
+</body>
+</html>

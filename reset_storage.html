@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로컬 스토리지 초기화 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 헤더 -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <section class="form-section">
+                <h2>⚠️ 로컬 스토리지 초기화</h2>
+                <p>이 버튼을 누르면 저장된 모든 사용자 정보, 차단 목록 등이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
+                <button id="clear-storage-btn" class="button-primary" style="background-color: #ff4d4d;">모든 데이터 삭제하기</button>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Petples. All Rights Reserved.</p>
+            <p>회사소개 | 이용약관 | 개인정보처리방침</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('clear-storage-btn').addEventListener('click', () => {
+            if (confirm('정말로 모든 로컬 스토리지 데이터를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                localStorage.clear();
+                alert('로컬 스토리지가 성공적으로 비워졌습니다.');
+                window.location.href = 'index.html'; // 메인 페이지로 이동
+            }
+        });
+    </script>
+
+</body>
+</html>

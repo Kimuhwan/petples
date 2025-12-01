@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) {
         // 로그인 상태일 때 메뉴
         authNav.innerHTML = `
+            <li><a href="chat_list.html">대화</a></li>
             <li><a href="mypage.html">마이페이지</a></li>
             <li><a href="#" id="logout-button">로그아웃</a></li>
         `;

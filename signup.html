@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입 - 펫플스</title>
+    <title>Petples 회원가입</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 추가된 스타일 */
+        .optional-label::after {
+            content: ' (선택)';
+            font-weight: normal;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
     <!-- 헤더 -->
@@ -30,8 +38,8 @@
         <div class="container">
             <section class="form-section">
                 <h2>🐾 펫플스 회원가입</h2>
-                <p>보호자님과 반려견의 정보를 입력해주세요.</p>
-                <form id="signup-form" class="auth-form">
+                <p>보호자님과 반려동물의 정보를 입력해주세요.</p>
+                <form id="signup-form" class="auth-form" enctype="multipart/form-data">
                     <h3>보호자 정보</h3>
                     <div class="form-group">
                         <label for="userid">아이디</label>
@@ -42,54 +50,110 @@
                         <input type="password" id="password" name="password" placeholder="사용할 비밀번호를 입력하세요" required>
                     </div>
                     <div class="form-group">
-                        <label for="owner-name">이름</label>
-                        <input type="text" id="owner-name" name="ownerName" placeholder="견주님의 이름을 입력하세요" required>
+                        <label for="human-name">이름</label>
+                        <input type="text" id="human-name" name="human_name" placeholder="보호자님의 이름을 입력하세요" required>
                     </div>
                     <div class="form-group">
-                        <label for="owner-age">나이</label>
-                        <input type="number" id="owner-age" name="ownerAge" placeholder="견주님의 나이를 입력하세요" required>
+                        <label for="human-age">나이</label>
+                        <input type="number" id="human-age" name="human_age" placeholder="보호자님의 나이를 입력하세요" required>
                     </div>
                     <div class="form-group">
                         <label>성별</label>
                         <div class="radio-group">
-                            <label><input type="radio" name="gender" value="남성" required> 남성</label>
-                            <label><input type="radio" name="gender" value="여성" required> 여성</label>
+                            <label><input type="radio" name="human_gender" value="남성" required> 남성</label>
+                            <label><input type="radio" name="human_gender" value="여성" required> 여성</label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="phone">전화번호</label>
-                        <input type="tel" id="phone" name="phone" placeholder="'-' 없이 숫자만 입력" required>
+                        <label for="human-photo">사진 (1개)</label>
+                        <input type="file" id="human-photo" name="human_photo" accept="image/*" required>
                     </div>
+                    <div class="form-group">
+                        <label for="preferred-breed" class="optional-label">매칭 선호 종</label>
+                        <input type="text" id="preferred-breed" name="preferred_breed" placeholder="선호하는 동물/품종을 입력하세요">
+                    </div>
+                    <div class="form-group">
+                        <label for="lifestyle" class="optional-label">생활 양식</label>
+                        <textarea id="lifestyle" name="lifestyle" rows="3" placeholder="예: 주말마다 공원에 가요, 활동적인 편이에요"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="neighborhood" class="optional-label">사는 동네</label>
+                        <input type="text" id="neighborhood" name="neighborhood" placeholder="예: 서울시 강남구">
+                    </div>
+
                     <hr>
-                    <h3>반려견 정보</h3>
+
+                    <h3>반려동물 정보</h3>
                     <div class="form-group">
-                        <label for="dog-breed">강아지 견종</label>
-                        <input type="text" id="dog-breed" name="dogBreed" placeholder="예: 시바견" required>
-                    </div>
-                    <div class="form-group">
-                        <label>강아지 성별</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="dogGender" value="남아" required> 남아</label>
-                            <label><input type="radio" name="dogGender" value="여아" required> 여아</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="dog-age">강아지 나이</label>
-                        <input type="number" id="dog-age" name="dogAge" placeholder="강아지의 나이를 입력하세요" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dog-size">강아지 크기</label>
-                        <select id="dog-size" name="dogSize" required>
+                        <label for="pet-type">동물 종류</label>
+                        <select id="pet-type" name="pet_type" required>
                             <option value="">선택하세요</option>
-                            <option value="소형견">소형견</option>
-                            <option value="중형견">중형견</option>
-                            <option value="대형견">대형견</option>
+                            <option value="강아지">강아지</option>
+                            <option value="고양이">고양이</option>
+                            <option value="앵무새">앵무새</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="dog-reg-number">강아지 등록증 일련번호</label>
-                        <input type="text" id="dog-reg-number" name="dogRegNumber" placeholder="선택사항">
+                        <label for="pet-photo">사진 (1개)</label>
+                        <input type="file" id="pet-photo" name="pet_photo" accept="image/*" required>
                     </div>
+                    <div class="form-group">
+                        <label for="pet-breed">품종</label>
+                        <input type="text" id="pet-breed" name="pet_breed" placeholder="동물 종류를 먼저 선택해주세요." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-age">나이</label>
+                        <input type="number" id="pet-age" name="pet_age" placeholder="반려동물의 나이를 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-weight">몸무게(kg)</label>
+                        <input type="number" id="pet-weight" name="pet_weight" step="0.1" placeholder="예: 5.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>성별</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="pet_gender" value="수컷" required> 수컷</label>
+                            <label><input type="radio" name="pet_gender" value="암컷" required> 암컷</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="neutered">중성화 수술 유무</label>
+                        <select id="neutered" name="neutered" required>
+                            <option value="">선택하세요</option>
+                            <option value="true">예</option>
+                            <option value="false">아니오</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vaccination">접종내역</label>
+                        <textarea id="vaccination" name="vaccination" rows="3" placeholder="최근 접종 내역을 입력해주세요." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="allergies">알러지 유무</label>
+                        <textarea id="allergies" name="allergies" rows="3" placeholder="예: 닭고기, 유제품 등. 없는 경우 '없음'으로 기재" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="microchip" class="optional-label">칩 등록 여부</label>
+                        <select id="microchip" name="microchip">
+                            <option value="">선택하세요</option>
+                            <option value="true">등록됨</option>
+                            <option value="false">등록 안 됨</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="personality" class="optional-label">성격</label>
+                        <textarea id="personality" name="personality" rows="3" placeholder="반려동물의 성격을 알려주세요. 예: 활발하고 사람을 좋아해요."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred-snacks" class="optional-label">선호 간식</label>
+                        <input type="text" id="preferred-snacks" name="preferred_snacks" placeholder="좋아하는 간식이 있다면 알려주세요.">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pet-reg-number" class="optional-label">동물 등록증 번호</label>
+                        <input type="text" id="pet-reg-number" name="pet_reg_number" placeholder="등록증이 있다면 번호를 입력해주세요.">
+                    </div>
+
                     <button type="submit" class="button-primary">가입하기</button>
                 </form>
             </section>
@@ -99,29 +163,73 @@
     <!-- 푸터 -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>&copy; 2024 Petples. All Rights Reserved.</p>
             <p>회사소개 | 이용약관 | 개인정보처리방침</p>
         </div>
     </footer>
 
     <script src="auth.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const petTypeSelect = document.getElementById('pet-type');
+            const petBreedInput = document.getElementById('pet-breed');
+
+            petTypeSelect.addEventListener('change', function() {
+                const selectedType = this.value;
+                let placeholderText = '품종을 입력해주세요.';
+
+                switch (selectedType) {
+                    case '강아지':
+                        placeholderText = '예: 시바견, 푸들, 골든 리트리버';
+                        break;
+                    case '고양이':
+                        placeholderText = '예: 코리안 숏헤어, 페르시안, 랙돌';
+                        break;
+                    case '앵무새':
+                        placeholderText = '예: 사랑앵무, 왕관앵무, 모란앵무';
+                        break;
+                    default:
+                        placeholderText = '동물 종류를 먼저 선택해주세요.';
+                }
+                petBreedInput.placeholder = placeholderText;
+            });
+        });
+
         document.getElementById('signup-form').addEventListener('submit', function(event) {
             event.preventDefault(); // 폼 기본 제출 동작 방지
 
             const formData = new FormData(this);
+            // FormData의 모든 키와 값을 객체로 변환합니다.
+            const formProps = Object.fromEntries(formData);
+
             const user = {
-                userid: formData.get('userid'),
-                password: formData.get('password'), // 실제 서비스에서는 비밀번호를 암호화해야 합니다.
-                ownerName: formData.get('ownerName'),
-                ownerAge: formData.get('ownerAge'),
-                gender: formData.get('gender'),
-                phone: formData.get('phone'),
-                dogBreed: formData.get('dogBreed'),
-                dogGender: formData.get('dogGender'),
-                dogAge: formData.get('dogAge'),
-                dogSize: formData.get('dogSize'),
-                dogRegNumber: formData.get('dogRegNumber') || '미입력'
+                // 기존 정보
+                userid: formProps.userid,
+                password: formProps.password, // 실제 서비스에서는 비밀번호를 암호화해야 합니다.
+
+                // 사람 프로필
+                human_name: formProps.human_name,
+                human_gender: formProps.human_gender,
+                human_age: formProps.human_age,
+                human_photo: formProps.human_photo.name, // 파일 이름만 저장
+                preferred_breed: formProps.preferred_breed || '미입력',
+                lifestyle: formProps.lifestyle || '미입력',
+                neighborhood: formProps.neighborhood || '미입력',
+
+                // 반려동물 프로필
+                pet_type: formProps.pet_type,
+                pet_photo: formProps.pet_photo.name, // 파일 이름만 저장
+                pet_breed: formProps.pet_breed,
+                pet_age: formProps.pet_age,
+                pet_weight: formProps.pet_weight,
+                pet_gender: formProps.pet_gender,
+                neutered: formProps.neutered,
+                vaccination: formProps.vaccination,
+                allergies: formProps.allergies,
+                microchip: formProps.microchip || '미선택',
+                personality: formProps.personality || '미입력',
+                preferred_snacks: formProps.preferred_snacks || '미입력',
+                pet_reg_number: formProps.pet_reg_number || '미입력'
             };
 
             // 사용자 정보를 localStorage에 저장
@@ -130,6 +238,7 @@
             alert('회원가입이 완료되었습니다! 환영합니다!');
             window.location.href = 'index.html'; // 메인 페이지로 이동
         });
+
     </script>
 
 </body>

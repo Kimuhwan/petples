@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화 목록 - 펫플스</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .chat-list-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .chat-room-list {
+            list-style: none;
+            padding: 0;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .chat-room-item a {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            gap: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        .chat-room-item:last-child a {
+            border-bottom: none;
+        }
+        .chat-room-item a:hover {
+            background-color: #f9f9f9;
+        }
+        .chat-room-item img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .chat-room-details {
+            flex-grow: 1;
+        }
+        .chat-room-details .name {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .chat-room-details .last-message {
+            color: #666;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px;
+        }
+        .chat-room-meta .time {
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/app_icon.png" alt="펫플스 앱 아이콘">
+                <h1><a href="index.html">펫플스</a></h1>
+            </div>
+            <nav class="nav">
+                <ul id="nav-menu">
+                    <!-- auth.js가 동적으로 채웁니다 -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="chat-list-container">
+            <h2>💬 대화 목록</h2>
+            <ul id="chat-list" class="chat-room-list">
+                <!-- 채팅방 목록이 여기에 동적으로 삽입됩니다. -->
+            </ul>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // localStorage에서 채팅방 목록을 불러옵니다.
+            const chatRooms = JSON.parse(localStorage.getItem('petples_chat_rooms')) || [];
+
+            const chatListUl = document.getElementById('chat-list');
+            if (chatRooms.length > 0) {
+                chatRooms.forEach(room => {
+                    const li = document.createElement('li');
+                    li.className = 'chat-room-item';
+                    li.innerHTML = `
+                        <a href="chat.html?with=${room.name}">
+                            <img src="${room.imgSrc}" alt="${room.name}">
+                            <div class="chat-room-details">
+                                <div class="name">${room.name}</div>
+                                <p class="last-message">${room.lastMessage}</p>
+                            </div>
+                            <div class="chat-room-meta">
+                                <span class="time">${room.time}</span>
+                            </div>
+                        </a>
+                    `;
+                    chatListUl.appendChild(li);
+                });
+            } else {
+                chatListUl.innerHTML = '<li style="padding: 20px; text-align: center;">아직 대화 상대가 없습니다.</li>';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -30,10 +30,15 @@
         <div class="container">
             <section class="mypage-section">
                 <h2>👤 마이페이지</h2>
+                <div class="profile-links">
+                    <a href="human_profile.html">내 프로필 관리</a>
+                    <a href="pet_profile.html">반려동물 프로필 관리</a>
+                </div>
                 <div id="user-info" class="user-info-card">
                     <!-- auth.js가 사용자 정보를 채웁니다 -->
                     <p>정보를 불러오는 중...</p>
                 </div>
+                <button id="logout-btn" class="button-primary" style="margin-top: 20px; background-color: #6c757d;">로그아웃</button>
             </section>
         </div>
     </main>
@@ -41,7 +46,7 @@
     <!-- 푸터 -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 Petples. All Rights Reserved.</p>
+            <p>&copy; 2024 Petples. All Rights Reserved.</p>
             <p>회사소개 | 이용약관 | 개인정보처리방침</p>
         </div>
     </footer>
@@ -55,21 +60,34 @@
             if (user) {
                 userInfoDiv.innerHTML = `
                     <h3>보호자 정보</h3>
-                    <p><strong>아이디:</strong> ${user.userid}</p>
-                    <p><strong>이름:</strong> ${user.ownerName}</p>
-                    <p><strong>나이:</strong> ${user.ownerAge}</p>
-                    <p><strong>성별:</strong> ${user.gender}</p>
-                    <p><strong>전화번호:</strong> ${user.phone}</p>
+                    <p><strong>아이디:</strong> ${user.userid || '정보 없음'}</p>
+                    <p><strong>이름:</strong> ${user.human_name || '정보 없음'}</p>
+                    <p><strong>나이:</strong> ${user.human_age || '정보 없음'}</p>
+                    <p><strong>성별:</strong> ${user.human_gender || '정보 없음'}</p>
+                    <p><strong>사는 동네:</strong> ${user.neighborhood || '정보 없음'}</p>
                     <hr>
-                    <h3>반려견 정보</h3>
-                    <p><strong>견종:</strong> ${user.dogBreed}</p>
-                    <p><strong>성별:</strong> ${user.dogGender}</p>
-                    <p><strong>나이:</strong> ${user.dogAge}</p>
-                    <p><strong>크기:</strong> ${user.dogSize}</p>
-                    <p><strong>등록번호:</strong> ${user.dogRegNumber}</p>
+                    <h3>반려동물 정보</h3>
+                    <p><strong>동물 종류:</strong> ${user.pet_type || '정보 없음'}</p>
+                    <p><strong>품종:</strong> ${user.pet_breed || '정보 없음'}</p>
+                    <p><strong>성별:</strong> ${user.pet_gender || '정보 없음'}</p>
+                    <p><strong>나이:</strong> ${user.pet_age || '정보 없음'}</p>
+                    <p><strong>몸무게:</strong> ${user.pet_weight ? user.pet_weight + 'kg' : '정보 없음'}</p>
+                    <p><strong>등록번호:</strong> ${user.pet_reg_number || '정보 없음'}</p>
                 `;
             } else {
                 userInfoDiv.innerHTML = '<p>로그인 정보가 없습니다. <a href="signup.html">회원가입</a>을 먼저 진행해주세요.</p>';
+            }
+
+            // 로그아웃 버튼 이벤트 리스너
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    if (confirm('로그아웃 하시겠습니까?')) {
+                        localStorage.clear(); // 모든 로컬 스토리지 데이터 삭제
+                        alert('로그아웃되었습니다.');
+                        window.location.href = 'login.html'; // 로그인 페이지로 이동
+                    }
+                });
             }
         });
     </script>
