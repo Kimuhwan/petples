@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>마이페이지 - 펫플스</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #f0f0f0;
+        }
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
@@ -59,14 +69,16 @@
 
             if (user) {
                 userInfoDiv.innerHTML = `
-                    <h3>보호자 정보</h3>
+                    <h3>👤 보호자 정보</h3>
+                    <img src="${user.human_photo ? 'images/' + user.human_photo : 'images/default_user.png'}" alt="보호자 사진" class="profile-photo">
                     <p><strong>아이디:</strong> ${user.userid || '정보 없음'}</p>
                     <p><strong>이름:</strong> ${user.human_name || '정보 없음'}</p>
                     <p><strong>나이:</strong> ${user.human_age || '정보 없음'}</p>
                     <p><strong>성별:</strong> ${user.human_gender || '정보 없음'}</p>
                     <p><strong>사는 동네:</strong> ${user.neighborhood || '정보 없음'}</p>
                     <hr>
-                    <h3>반려동물 정보</h3>
+                    <h3>🐾 반려동물 정보</h3>
+                    <img src="${user.pet_photo ? 'images/' + user.pet_photo : 'images/default_pet.png'}" alt="반려동물 사진" class="profile-photo">
                     <p><strong>동물 종류:</strong> ${user.pet_type || '정보 없음'}</p>
                     <p><strong>품종:</strong> ${user.pet_breed || '정보 없음'}</p>
                     <p><strong>성별:</strong> ${user.pet_gender || '정보 없음'}</p>
