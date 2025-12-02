@@ -1,4 +1,19 @@
 /* 기본 스타일 초기화 및 설정 */
+/* 
+  화면 크기에 따라 폰트 크기가 부드럽게 조절되도록 설정합니다.
+  - 기본 폰트 크기를 1vw로 설정하여 화면 너비의 1%가 되게 합니다.
+  - calc()를 사용하여 최소 폰트 크기를 보장하고, vw와 조합하여 유동성을 부여합니다.
+  - 미디어 쿼리를 사용하여 특정 화면 크기에서 폰트 크기가 너무 커지거나 작아지는 것을 방지합니다.
+*/
+html {
+    font-size: calc(14px + 0.3vw); /* 기본 폰트 크기를 뷰포트 너비에 따라 조절 */
+}
+
+@media (min-width: 1200px) {
+    html {
+        font-size: 18px; /* 화면이 너무 클 때 폰트가 과도하게 커지는 것을 방지 */
+    }
+}
 body {
     font-family: 'Noto Sans KR', sans-serif;
     margin: 0;
@@ -71,6 +86,38 @@ a {
 
 .nav a:hover {
     color: #ff7f50; /* 포인트 컬러 (산호색) */
+}
+
+/* 모바일 네비게이션 토글 버튼 (햄버거) */
+.nav-toggle {
+    display: none; /* 기본적으로 숨김 */
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    z-index: 1001; /* 메뉴 위에 오도록 */
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    display: block;
+    background-color: #333;
+    height: 3px;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger::before {
+    transform: translateY(-8px);
+}
+
+.hamburger::after {
+    transform: translateY(8px);
 }
 
 /* 인증(로그인/회원가입) 네비게이션 */
@@ -528,17 +575,47 @@ section h2 {
 
 /* 태블릿 (768px 이하) */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
+    /* 모바일 네비게이션 활성화 */
+    .nav-toggle {
+        display: block;
     }
+
+    /* 햄버거 버튼 활성 상태 (X 모양으로 변경) */
+    .nav-toggle.active .hamburger {
+        background-color: transparent;
+    }
+    .nav-toggle.active .hamburger::before {
+        transform: rotate(45deg);
+    }
+    .nav-toggle.active .hamburger::after {
+        transform: rotate(-45deg);
+        transform-origin: center;
+        /* Y축 위치 보정 */
+        position: relative;
+        top: -11px;
+    }
+
     .nav ul {
-        margin-top: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
+        display: none; /* 기본적으로 메뉴 숨김 */
+        position: absolute;
+        top: 70px; /* 헤더 높이에 맞춰 조정 */
+        right: 0;
+        background-color: #fff;
+        width: 100%;
+        flex-direction: column;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
+    .nav ul.active {
+        display: flex; /* 활성화 시 메뉴 보임 */
+    }
+
     .nav li {
-        margin: 5px 10px;
+        margin: 0;
+        padding: 15px 0;
+        border-bottom: 1px solid #f0f0f0;
     }
+
     .hero h1 {
         font-size: 2.5em;
     }

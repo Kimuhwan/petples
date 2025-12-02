@@ -14,6 +14,19 @@
             margin-bottom: 15px;
             border: 3px solid #f0f0f0;
         }
+
+        /* 모바일 환경을 위한 미디어 쿼리 */
+        @media (max-width: 768px) {
+            .mypage-section h2 {
+                font-size: 1.5em; /* 제목 폰트 크기 조절 */
+            }
+            .user-info-card p {
+                font-size: 0.9em; /* 본문 폰트 크기 조절 */
+            }
+            .profile-links a {
+                font-size: 0.9em;
+            }
+        }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +41,9 @@
                 <h1><a href="index.html">펫플스</a></h1>
             </div>
             <nav class="nav">
+                <button class="nav-toggle" aria-label="네비게이션 메뉴 열기">
+                    <span class="hamburger"></span>
+                </button>
                 <ul id="nav-menu">
                     <!-- auth.js가 동적으로 채웁니다 -->
                 </ul>
@@ -99,6 +115,17 @@
                         alert('로그아웃되었습니다.');
                         window.location.href = 'login.html'; // 로그인 페이지로 이동
                     }
+                });
+            }
+
+            // 모바일 네비게이션 토글
+            const navToggle = document.querySelector('.nav-toggle');
+            const navMenu = document.querySelector('.nav ul');
+
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
                 });
             }
         });
