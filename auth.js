@@ -5,11 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 기본 네비게이션 메뉴
     const baseMenu = `
+        <li><a href="inquiry.html">1:1 문의</a></li>
         <li><a href="community.html">커뮤니티</a></li>
         <li><a href="matching.html">산책 메이트 찾기</a></li>
         <li><a href="local.html">우리 동네</a></li>
     `;
-    navMenu.innerHTML = baseMenu;
+    navMenu.innerHTML = baseMenu; // '1:1 문의'를 포함하여 메뉴를 설정합니다.
 
     // 인증 관련 메뉴를 담을 새로운 ul 생성
     const authNav = document.createElement('ul');
