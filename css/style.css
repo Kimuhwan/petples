@@ -223,6 +223,24 @@ section h2 {
     color: #007bff;
     text-decoration: none;
 }
+/* --- 마이페이지 스타일 시작 --- */
+.mypage-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.mypage-profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: #eee; /* 이미지가 없을 경우를 대비한 배경색 */
+}
+/* --- 마이페이지 스타일 끝 --- */
 
 .post-list .post-meta {
     font-size: 0.9em;
@@ -424,7 +442,7 @@ section h2 {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    height: calc(100vh - 250px); /* 뷰포트 높이에 따라 유동적으로 조절 */
+    height: calc(100vh - 160px); /* 뷰포트 높이에 따라 유동적으로 조절 (헤더/푸터 고려) */
     min-height: 500px;
     background-color: #f0f2f5; /* 배경색 변경 */
     padding: 20px 0;
@@ -435,7 +453,7 @@ section h2 {
     position: relative;
     width: 320px;
     height: 450px;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* 버튼과의 간격 확보 */
 }
 
 .card {
@@ -676,6 +694,11 @@ section h2 {
     .post-list .post-meta {
         margin-top: 8px;
         font-size: 0.8em;
+    }
+    .matching-container {
+        height: auto; /* 모바일에서는 높이 자동 조절 */
+        min-height: 0;
+        padding: 20px;
     }
     .screenshot-gallery {
         flex-direction: column;
