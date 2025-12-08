@@ -41,14 +41,14 @@
                 <h1><a href="index.html">펫플스</a></h1>
             </div>
             <nav class="nav">
-                <button class="nav-toggle" aria-label="네비게이션 메뉴 열기">
-                    <span class="hamburger"></span>
-                </button>
                 <ul id="nav-menu">
                     <li><a href="inquiry.html">1:1 문의</a></li>
                     <!-- auth.js가 동적으로 채웁니다 -->
                 </ul>
             </nav>
+            <button class="nav-toggle" aria-label="네비게이션 메뉴 열기">
+                <span class="hamburger"></span>
+            </button>
         </div>
     </header>
 
@@ -121,11 +121,11 @@
 
             // 모바일 네비게이션 토글
             const navToggle = document.querySelector('.nav-toggle');
-            const navMenu = document.querySelector('.nav ul');
+            const navContainer = document.querySelector('.nav'); // 제어 대상을 .nav로 변경
 
-            if (navToggle && navMenu) {
+            if (navToggle && navContainer) {
                 navToggle.addEventListener('click', () => {
-                    navMenu.classList.toggle('active');
+                    navContainer.classList.toggle('active'); // .nav에 active 클래스 토글
                     navToggle.classList.toggle('active');
                 });
             }

@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const navMenu = document.getElementById('nav-menu');
-    const headerContainer = document.querySelector('.header .container');
     const user = JSON.parse(localStorage.getItem('petples_user'));
 
     // 기본 네비게이션 메뉴
@@ -12,24 +11,21 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     navMenu.innerHTML = baseMenu; // '1:1 문의'를 포함하여 메뉴를 설정합니다.
 
-    // 인증 관련 메뉴를 담을 새로운 ul 생성
-    const authNav = document.createElement('ul');
-    authNav.className = 'auth-nav';
-    headerContainer.appendChild(authNav);
-
     if (user) {
         // 로그인 상태일 때 메뉴
-        authNav.innerHTML = `
+        navMenu.innerHTML += `
             <li><a href="chat_list.html">대화</a></li>
             <li><a href="mypage.html">마이페이지</a></li>
             <li><a href="#" id="logout-button">로그아웃</a></li>
         `;
     } else {
         // 로그아웃 상태일 때 메뉴
-        authNav.innerHTML = `
+        navMenu.innerHTML += `
             <li><a href="login.html">로그인</a></li>
             <li><a href="signup.html" class="button-signup">회원가입</a></li>
         `;
+        // 로그아웃 상태에서는 auth-nav 클래스를 navMenu에 추가하여 스타일을 적용합니다.
+        navMenu.classList.add('auth-nav');
     }
 
     // 로그아웃 버튼에 이벤트 리스너 추가

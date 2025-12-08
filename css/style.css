@@ -23,6 +23,11 @@ body {
     line-height: 1.6;
 }
 
+/* 메뉴가 열렸을 때 배경 스크롤 방지 */
+body.menu-open {
+    overflow: hidden;
+}
+
 /* 링크 기본 스타일 */
 a {
     text-decoration: none;
@@ -124,11 +129,9 @@ a {
 .auth-nav {
     margin: 0;
     padding: 0;
-    list-style: none;
-    display: flex;
-    align-items: center;
 }
 
+/* .auth-nav는 이제 .nav ul에 추가되는 클래스로, li 스타일만 제어합니다. */
 .auth-nav li {
     margin-left: 15px;
 }
@@ -626,33 +629,58 @@ section h2 {
     .nav-toggle.active .hamburger::before {
         transform: rotate(45deg);
     }
+    /* Y축 위치 보정을 transform으로 변경하여 더 부드럽게 만듭니다. */
     .nav-toggle.active .hamburger::after {
-        transform: rotate(-45deg);
-        transform-origin: center;
-        /* Y축 위치 보정 */
-        position: relative;
-        top: -11px;
+        transform: translateY(-8px) rotate(-45deg);
     }
 
-    .nav ul {
-        display: none; /* 기본적으로 메뉴 숨김 */
+    /* 모바일 메뉴 컨테이너 스타일 */
+    .nav {
         position: absolute;
         top: 70px; /* 헤더 높이에 맞춰 조정 */
         right: 0;
-        background-color: #fff;
-        width: 100%;
-        flex-direction: column;
-        text-align: center;
+        left: 0; /* 화면 전체 너비 차지 */
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        /* display: none 대신 transform과 opacity로 제어 */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
     }
-    .nav ul.active {
-        display: flex; /* 활성화 시 메뉴 보임 */
+    .nav.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .nav ul {
+        flex-direction: column;
+        width: 100%; /* 전체 너비 사용 */
+        margin-top: 30px;
+        padding: 20px 0; /* 상하 패딩 추가 */
+        text-align: center; /* 메뉴 항목 중앙 정렬 */
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        background-color: white;
     }
 
     .nav li {
         margin: 0;
-        padding: 15px 0;
         border-bottom: 1px solid #f0f0f0;
+    }
+
+    .nav li:last-child {
+        border-bottom: none; /* 마지막 항목의 밑줄 제거 */
+    }
+
+    .nav a {
+        display: block; /* 링크 영역을 전체로 확장 */
+        padding: 15px 20px; /* 패딩으로 터치 영역 확보 */
+    }
+
+    /* 모바일에서 .auth-nav는 별도 레이아웃이 필요 없습니다. */
+    .auth-nav { 
+        padding: 0; /* 기존 패딩/마진 초기화 */
     }
 
     .hero h1 {

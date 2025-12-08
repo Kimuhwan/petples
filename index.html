@@ -71,6 +71,9 @@
                     <!-- auth.js가 동적으로 채웁니다 -->
                 </ul>
             </nav>
+            <button class="nav-toggle" aria-label="네비게이션 메뉴 열기">
+                <span class="hamburger"></span>
+            </button>
         </div>
     </header>
 
@@ -125,8 +128,19 @@
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
                 }, 500);
-            }, 3000); // 3초 (3000ms)
+            }, 1000); // 3초 (3000ms)
         });
+
+        // 모바일 네비게이션 토글 (모든 페이지에 공통으로 추가)
+        const navToggle = document.querySelector('.nav-toggle');
+        const navContainer = document.querySelector('.nav');
+
+        if (navToggle && navContainer) {
+            navToggle.addEventListener('click', () => {
+                navContainer.classList.toggle('active');
+                navToggle.classList.toggle('active');
+            });
+        }
     </script>
 </body>
 </html>

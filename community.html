@@ -29,6 +29,9 @@
                     <!-- js/auth.js가 동적으로 메뉴를 채웁니다. -->
                 </ul>
             </nav>
+            <button class="nav-toggle" aria-label="네비게이션 메뉴 열기">
+                <span class="hamburger"></span>
+            </button>
         </div>
     </header>
 
@@ -89,6 +92,19 @@
 
             if (user) {
                 writeButton.style.display = 'block'; // 로그인 시 글쓰기 버튼 표시
+            }
+
+            // 모바일 네비게이션 토글 (모든 페이지에 공통으로 추가)
+            const navToggle = document.querySelector('.nav-toggle');
+            const navContainer = document.querySelector('.nav');
+
+            if (navToggle && navContainer) {
+                navToggle.addEventListener('click', () => {
+                    // body 스크롤 방지 클래스 토글
+                    document.body.classList.toggle('menu-open');
+                    navContainer.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                });
             }
         });
     </script>
