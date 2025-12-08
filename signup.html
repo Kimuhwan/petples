@@ -196,48 +196,70 @@
             });
         });
 
-        document.getElementById('signup-form').addEventListener('submit', function(event) {
+        document.getElementById('signup-form').addEventListener('submit', async function(event) {
             event.preventDefault(); // 폼 기본 제출 동작 방지
 
             const formData = new FormData(this);
-            // FormData의 모든 키와 값을 객체로 변환합니다.
             const formProps = Object.fromEntries(formData);
 
-            const user = {
-                // 기존 정보
-                userid: formProps.userid,
-                password: formProps.password, // 실제 서비스에서는 비밀번호를 암호화해야 합니다.
-
-                // 사람 프로필
-                human_name: formProps.human_name,
-                human_gender: formProps.human_gender,
-                human_age: formProps.human_age,
-                human_photo: formProps.human_photo.name, // 파일 이름만 저장
-                preferred_breed: formProps.preferred_breed || '미입력',
-                lifestyle: formProps.lifestyle || '미입력',
-                neighborhood: formProps.neighborhood || '미입력',
-
-                // 반려동물 프로필
-                pet_type: formProps.pet_type,
-                pet_photo: formProps.pet_photo.name, // 파일 이름만 저장
-                pet_breed: formProps.pet_breed,
-                pet_age: formProps.pet_age,
-                pet_weight: formProps.pet_weight,
-                pet_gender: formProps.pet_gender,
-                neutered: formProps.neutered,
-                vaccination: formProps.vaccination,
-                allergies: formProps.allergies,
-                microchip: formProps.microchip || '미선택',
-                personality: formProps.personality || '미입력',
-                preferred_snacks: formProps.preferred_snacks || '미입력',
-                pet_reg_number: formProps.pet_reg_number || '미입력'
+            // 파일을 Base64로 읽는 Promise 함수
+            const readFileAsDataURL = (file) => {
+                return new Promise((resolve, reject) => {
+                    if (!file || file.size === 0) {
+                        resolve(null); // 파일이 없는 경우 null 반환
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
             };
 
-            // 사용자 정보를 localStorage에 저장
-            localStorage.setItem('petples_user', JSON.stringify(user));
+            try {
+                // 두 파일 읽기를 동시에 진행
+                const [humanPhotoData, petPhotoData] = await Promise.all([
+                    readFileAsDataURL(formProps.human_photo),
+                    readFileAsDataURL(formProps.pet_photo)
+                ]);
 
-            alert('회원가입이 완료되었습니다! 환영합니다!');
-            window.location.href = 'index.html'; // 메인 페이지로 이동
+                const user = {
+                    // 기존 정보
+                    userid: formProps.userid,
+                    password: formProps.password, // 실제 서비스에서는 비밀번호를 암호화해야 합니다.
+
+                    // 사람 프로필
+                    human_name: formProps.human_name,
+                    human_gender: formProps.human_gender,
+                    human_age: formProps.human_age,
+                    human_photo: humanPhotoData, // Base64 데이터 저장
+                    preferred_breed: formProps.preferred_breed || '미입력',
+                    lifestyle: formProps.lifestyle || '미입력',
+                    neighborhood: formProps.neighborhood || '미입력',
+
+                    // 반려동물 프로필
+                    pet_type: formProps.pet_type,
+                    pet_photo: petPhotoData, // Base64 데이터 저장
+                    pet_breed: formProps.pet_breed,
+                    pet_age: formProps.pet_age,
+                    pet_weight: formProps.pet_weight,
+                    pet_gender: formProps.pet_gender,
+                    neutered: formProps.neutered,
+                    vaccination: formProps.vaccination,
+                    allergies: formProps.allergies,
+                    microchip: formProps.microchip || '미선택',
+                    personality: formProps.personality || '미입력',
+                    preferred_snacks: formProps.preferred_snacks || '미입력',
+                    pet_reg_number: formProps.pet_reg_number || '미입력'
+                };
+
+                localStorage.setItem('petples_user', JSON.stringify(user));
+                alert('회원가입이 완료되었습니다! 환영합니다!');
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error("파일을 읽는 중 오류가 발생했습니다:", error);
+                alert("사진을 처리하는 중 오류가 발생했습니다. 다시 시도해주세요.");
+            }
         });
 
     </script>

@@ -27,6 +27,18 @@
                 font-size: 0.9em;
             }
         }
+
+        /* 네비게이션 토글(X) 버튼 위치 수정 */
+        .nav-toggle.active .hamburger {
+            background-color: transparent; /* 가운데 줄 숨기기 */
+        }
+        .nav-toggle.active .hamburger::before {
+            transform: translateY(0) rotate(45deg);
+        }
+        .nav-toggle.active .hamburger::after {
+            transform: translateY(0) rotate(-45deg);
+        }
+
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
