@@ -263,9 +263,15 @@
                 blockedUsers.forEach(user => {
                     const li = document.createElement('li');
                     li.innerHTML = `
-                        <img src="${user.imgSrc}" alt="${user.name}">
-                        <span class="user-details">${user.name}</span>
-                        <button class="unblock-btn" data-name="${user.name}">차단 해제</button>`;
+                        <img>
+                        <span class="user-details"></span>
+                        <button class="unblock-btn">차단 해제</button>`;
+                    // 차단 목록 값은 HTML로 파싱되지 않도록 속성과 텍스트로 설정합니다.
+                    const blockedImage = li.querySelector('img');
+                    blockedImage.src = user.imgSrc;
+                    blockedImage.alt = user.name;
+                    li.querySelector('.user-details').textContent = user.name;
+                    li.querySelector('.unblock-btn').dataset.name = user.name;
                     blockedListUl.appendChild(li);
                 });
             }
@@ -369,7 +375,7 @@
                     chatRooms.unshift(newRoom); // 새 채팅방을 맨 위에 추가
                     localStorage.setItem('petples_chat_rooms', JSON.stringify(chatRooms));
                 }
-                window.location.href = `chat.html?with=${dogName}`;
+                window.location.href = `chat.html?with=${encodeURIComponent(dogName)}`;
             }
         }
 

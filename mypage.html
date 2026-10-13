@@ -100,21 +100,29 @@
                 userInfoDiv.innerHTML = `
                     <h3>👤 보호자 정보</h3>
                     <img src="images/app_icon.png" alt="보호자 사진" class="profile-photo">
-                    <p><strong>아이디:</strong> ${user.userid || '정보 없음'}</p>
-                    <p><strong>이름:</strong> ${user.human_name || '정보 없음'}</p>
-                    <p><strong>나이:</strong> ${user.human_age || '정보 없음'}</p>
-                    <p><strong>성별:</strong> ${user.human_gender || '정보 없음'}</p>
-                    <p><strong>사는 동네:</strong> ${user.neighborhood || '정보 없음'}</p>
+                    <p><strong>아이디:</strong> <span data-field="userid"></span></p>
+                    <p><strong>이름:</strong> <span data-field="human_name"></span></p>
+                    <p><strong>나이:</strong> <span data-field="human_age"></span></p>
+                    <p><strong>성별:</strong> <span data-field="human_gender"></span></p>
+                    <p><strong>사는 동네:</strong> <span data-field="neighborhood"></span></p>
                     <hr>
                     <h3>🐾 반려동물 정보</h3>
                     <img src="images/corgi.png" alt="반려동물 사진" class="profile-photo">
-                    <p><strong>동물 종류:</strong> ${user.pet_type || '정보 없음'}</p>
-                    <p><strong>품종:</strong> ${user.pet_breed || '정보 없음'}</p>
-                    <p><strong>성별:</strong> ${user.pet_gender || '정보 없음'}</p>
-                    <p><strong>나이:</strong> ${user.pet_age || '정보 없음'}</p>
-                    <p><strong>몸무게:</strong> ${user.pet_weight ? user.pet_weight + 'kg' : '정보 없음'}</p>
-                    <p><strong>등록번호:</strong> ${user.pet_reg_number || '정보 없음'}</p>
+                    <p><strong>동물 종류:</strong> <span data-field="pet_type"></span></p>
+                    <p><strong>품종:</strong> <span data-field="pet_breed"></span></p>
+                    <p><strong>성별:</strong> <span data-field="pet_gender"></span></p>
+                    <p><strong>나이:</strong> <span data-field="pet_age"></span></p>
+                    <p><strong>몸무게:</strong> <span data-field="pet_weight"></span></p>
+                    <p><strong>등록번호:</strong> <span data-field="pet_reg_number"></span></p>
                 `;
+                // 가입/프로필 입력값을 HTML이 아닌 일반 텍스트로 표시합니다.
+                userInfoDiv.querySelectorAll('[data-field]').forEach(field => {
+                    const key = field.dataset.field;
+                    const value = user[key];
+                    field.textContent = value
+                        ? (key === 'pet_weight' ? `${value}kg` : value)
+                        : '정보 없음';
+                });
             } else {
                 userInfoDiv.innerHTML = '<p>로그인 정보가 없습니다. <a href="signup.html">회원가입</a>을 먼저 진행해주세요.</p>';
             }

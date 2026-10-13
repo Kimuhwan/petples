@@ -152,7 +152,9 @@
 
             };
 
-            const partner = petDatabase[dogName] || { dog: {name: '친구'}, owner: { name: '견주', age: '??', imgSrc: 'images/app_icon.png' }, answers: {} };
+            const partner = Object.prototype.hasOwnProperty.call(petDatabase, dogName)
+                ? petDatabase[dogName]
+                : { dog: {name: '친구'}, owner: { name: '견주', age: '??', imgSrc: 'images/app_icon.png' }, answers: {} };
             const chatHeader = document.getElementById('chat-header');
             const chatMessages = document.getElementById('chat-messages');
             const messageInput = document.getElementById('message-input');
@@ -160,12 +162,19 @@
 
             // 헤더에 상대방 견주 정보 표시
             chatHeader.innerHTML = `
-                <a href="profile.html?dog=${dogName}"><img src="${partner.owner.imgSrc}" alt="${partner.owner.name}"></a>
+                <a><img></a>
                 <div class="owner-info">
-                    <div class="name">${partner.owner.name}</div>
-                    <div class="age">${partner.owner.age}세</div>
+                    <div class="name"></div>
+                    <div class="age"></div>
                 </div>
             `;
+            // URL과 프로필 값은 HTML로 해석하지 않고 DOM 속성/텍스트로 설정합니다.
+            chatHeader.querySelector('a').href = `profile.html?dog=${encodeURIComponent(dogName)}`;
+            const ownerImage = chatHeader.querySelector('img');
+            ownerImage.src = partner.owner.imgSrc;
+            ownerImage.alt = partner.owner.name;
+            chatHeader.querySelector('.name').textContent = partner.owner.name;
+            chatHeader.querySelector('.age').textContent = `${partner.owner.age}세`;
 
             function addMessage(text, type) {
                 const messageDiv = document.createElement('div');

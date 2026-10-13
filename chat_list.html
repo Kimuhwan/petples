@@ -96,17 +96,25 @@
                     const li = document.createElement('li');
                     li.className = 'chat-room-item';
                     li.innerHTML = `
-                        <a href="chat.html?with=${room.name}">
-                            <img src="${room.imgSrc}" alt="${room.name}">
+                        <a>
+                            <img>
                             <div class="chat-room-details">
-                                <div class="name">${room.name}</div>
-                                <p class="last-message">${room.lastMessage}</p>
+                                <div class="name"></div>
+                                <p class="last-message"></p>
                             </div>
                             <div class="chat-room-meta">
-                                <span class="time">${room.time}</span>
+                                <span class="time"></span>
                             </div>
                         </a>
                     `;
+                    // 저장된 값은 HTML 문자열에 삽입하지 않습니다.
+                    li.querySelector('a').href = `chat.html?with=${encodeURIComponent(room.name)}`;
+                    const roomImage = li.querySelector('img');
+                    roomImage.src = room.imgSrc;
+                    roomImage.alt = room.name;
+                    li.querySelector('.name').textContent = room.name;
+                    li.querySelector('.last-message').textContent = room.lastMessage;
+                    li.querySelector('.time').textContent = room.time;
                     chatListUl.appendChild(li);
                 });
             } else {
